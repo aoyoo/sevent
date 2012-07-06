@@ -1,0 +1,58 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+Access	CommonOperation.cpp	/^bool Access(const char *pPath)$/;"	f
+AddHandler	CLogger.cpp	/^void CLogger::AddHandler(SharedHandlerPtr handler_ptr)$/;"	f	class:CLogger
+CLevel	CLevel.cpp	/^CLevel::CLevel(Log_Level_T value)$/;"	f	class:CLevel
+CLogRecord	CLogRecord.cpp	/^CLogRecord::CLogRecord()$/;"	f	class:CLogRecord
+CLogRecord	CLogRecord.cpp	/^CLogRecord::CLogRecord(CLevel level)$/;"	f	class:CLogRecord
+CLogRecord	CLogRecord.cpp	/^CLogRecord::CLogRecord(CLogRecord& _rhs)$/;"	f	class:CLogRecord
+CLogRecord	CLogRecord.cpp	/^CLogRecord::CLogRecord(const std::string& message,$/;"	f	class:CLogRecord
+CLogger	CLogger.cpp	/^CLogger::CLogger()$/;"	f	class:CLogger
+CLogger	CLogger.cpp	/^CLogger::CLogger(const CLogger& rhs)$/;"	f	class:CLogger
+GetFileLine	CLogRecord.cpp	/^const int& CLogRecord::GetFileLine()const$/;"	f	class:CLogRecord
+GetFileName	CLogRecord.cpp	/^const std::string& CLogRecord::GetFileName( )const$/;"	f	class:CLogRecord
+GetFileSize	CommonOperation.cpp	/^int GetFileSize(const char * pFileName)$/;"	f
+GetLevel	CLogRecord.cpp	/^CLevel& CLogRecord::GetLevel()$/;"	f	class:CLogRecord
+GetMessage	CLogRecord.cpp	/^const std::string& CLogRecord::GetMessage()const$/;"	f	class:CLogRecord
+GetName	CLevel.cpp	/^std::string CLevel::GetName()$/;"	f	class:CLevel
+GetSelfExecName	CommonOperation.cpp	/^bool GetSelfExecName(char * pBuf, int nBufSize)$/;"	f
+GetSelfExecPath	CommonOperation.cpp	/^bool GetSelfExecPath(char *pBuf,int nBufSize)$/;"	f
+GetThreadId	CLogRecord.cpp	/^const std::string& CLogRecord::GetThreadId()const$/;"	f	class:CLogRecord
+GetTimeStamp	CLogRecord.cpp	/^const Time& CLogRecord::GetTimeStamp()const$/;"	f	class:CLogRecord
+GetValue	CLevel.cpp	/^int CLevel::GetValue()$/;"	f	class:CLevel
+Greater	CLevel.cpp	/^bool CLevel::Greater(CLevel level)$/;"	f	class:CLevel
+IsBigEndEndian	CommonOperation.cpp	/^bool IsBigEndEndian()$/;"	f
+Log	CLogger.cpp	/^void CLogger::Log(CLogRecord record)$/;"	f	class:CLogger
+Log_Level_Name	CLevel.cpp	/^const std::string CLevel::Log_Level_Name[7]={$/;"	m	class:CLevel	file:
+MicroSeconds	CTime.cpp	/^Time Time::MicroSeconds(int64_t t)$/;"	f	class:Time
+MicroSecondsDouble	CTime.cpp	/^Time Time::MicroSecondsDouble(double t)$/;"	f	class:Time
+MillSeconds	CTime.cpp	/^Time Time::MillSeconds(int64_t t)$/;"	f	class:Time
+MillSecondsDouble	CTime.cpp	/^Time Time::MillSecondsDouble(double t)$/;"	f	class:Time
+Mkdir	CommonOperation.cpp	/^bool Mkdir(const char *pPath,int mode)$/;"	f
+Now	CTime.cpp	/^Time Time::Now(Clock clock)$/;"	f	class:Time
+RemoveHandler	CLogger.cpp	/^void CLogger::RemoveHandler(SharedHandlerPtr handler_ptr)$/;"	f	class:CLogger
+Seconds	CTime.cpp	/^Time Time::Seconds(int64_t t)$/;"	f	class:Time
+SecondsDouble	CTime.cpp	/^Time Time::SecondsDouble(double t)$/;"	f	class:Time
+SetLevel	CLogRecord.cpp	/^void CLogRecord::SetLevel(CLevel level)$/;"	f	class:CLogRecord
+SetMaxOpenFile	CommonOperation.cpp	/^int SetMaxOpenFile(int maxfile)$/;"	f
+SetMessage	CLogRecord.cpp	/^void CLogRecord::SetMessage(const std::string& message)$/;"	f	class:CLogRecord
+Time	CTime.cpp	/^Time::Time()$/;"	f	class:Time
+Time	CTime.cpp	/^Time::Time(int64_t usec) $/;"	f	class:Time
+ToDateTime	CTime.cpp	/^std::string Time::ToDateTime()const$/;"	f	class:Time
+ToDateTimeMs	CTime.cpp	/^std::string Time::ToDateTimeMs()const$/;"	f	class:Time
+ToDuration	CTime.cpp	/^std::string Time::ToDuration()const$/;"	f	class:Time
+ToMicroSeconds	CTime.cpp	/^int64_t Time::ToMicroSeconds()const$/;"	f	class:Time
+ToMicroSecondsDouble	CTime.cpp	/^double Time::ToMicroSecondsDouble()const$/;"	f	class:Time
+ToMillSeconds	CTime.cpp	/^int64_t Time::ToMillSeconds()const$/;"	f	class:Time
+ToMillSecondsDouble	CTime.cpp	/^double Time::ToMillSecondsDouble()const$/;"	f	class:Time
+ToSeconds	CTime.cpp	/^int64_t Time::ToSeconds()const$/;"	f	class:Time
+ToSecondsDouble	CTime.cpp	/^double Time::ToSecondsDouble()const$/;"	f	class:Time
+operator =	CLogger.cpp	/^CLogger& CLogger::operator=(const CLogger& rhs)$/;"	f	class:CLogger
+operator timeval	CTime.cpp	/^Time::operator timeval()const$/;"	f	class:Time
+~CLevel	CLevel.cpp	/^CLevel::~CLevel()$/;"	f	class:CLevel
+~CLogRecord	CLogRecord.cpp	/^CLogRecord::~CLogRecord()$/;"	f	class:CLogRecord
+~CLogger	CLogger.cpp	/^CLogger::~CLogger()$/;"	f	class:CLogger
