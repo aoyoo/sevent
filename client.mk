@@ -1,5 +1,5 @@
 target = client
-srcs = front_message.cpp front_server.cpp buffer.cpp event_manager.cpp message.cpp thread.cpp server.cpp socket.cpp socket_event.cpp client.cpp 
+srcs = front_message.cpp front_server.cpp buffer.cpp event_manager.cpp message.cpp thread.cpp task.cpp server.cpp socket.cpp socket_event.cpp client.cpp 
 libs = log/lib/liblog.a
 subdirs = log
 INCLUDE = -Ilog/include/  -I./

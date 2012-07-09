@@ -25,6 +25,7 @@ public:
 	socket_event(event_type_e t): socket_event_handler(NULL), event_type(t), socket_fd(0) {}
 	~socket_event(){
 		LOG_DEBUG_VA("socket_event %x fd: %d delete",this, socket_fd);
+	/*	
 		if(socket_event_handler != NULL)
 			delete socket_event_handler;
 		else
@@ -33,6 +34,7 @@ public:
 			close(socket_fd);
 		else
 			LOG_ERROR_VA("close fd error when ~socket_event");
+	*/
 	}
 
 	void set_socket_fd(int fd){socket_fd = fd;}

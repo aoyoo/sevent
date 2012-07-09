@@ -36,7 +36,11 @@ int event_manager::wait_for_events()
 	
 				int new_sock = accept(listen->get_socket_fd(), &addr, &length);
 				if (new_sock <= 0) {
-					LOG_ERROR_VA("new sock fd error :%d",new_sock);
+					if((errno == EAGAIN || errno == EWOULDBLOCK)) {
+						//
+					}else{
+						LOG_ERROR_VA("new sock fd error :%d",new_sock);
+					}
 					break;
 				}
 				
@@ -257,19 +261,9 @@ void event_manager::start_event_loop()
 				unregister_event(se);
 			}
 			
-			//unregister_event(se);
-			//delete se;
-			/*
-			unregister_event(*se);
-			if(delete_event_by_fd(se->get_socket_fd()) == -1 )
-				LOG_ERROR_VA("delete event by fd failed");
-			else
-				delete se;
-			*/
-			//can't delete, it must be use in task!!!
+			//can't delete the se, it must be use in task!!!
 			//when thread_pool handle the task
 			//then pthread delete the socket_event
-			//delete se;
 			
 		}else{
 			LOG_ERROR_VA("get ready event error");

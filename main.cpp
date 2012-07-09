@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 	string path = "./logs";
 	string log_level = "DEBUG";
 	if (!init_logger(path, log_level)) {
-		cout << "logger init failed, check /grpmrg/public/log[@path | @level]" << endl;
+		cout << "logger init failed log[@path | @level]" << endl;
 		return -1;
 	}
 	signal(SIGPIPE,SIG_IGN);

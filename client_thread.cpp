@@ -6,8 +6,8 @@
 #include "message.h"
 #include "Log.h"
 
-#define THREAD_NUM 5
-#define CALC_NUM   1
+#define THREAD_NUM 50
+#define CALC_NUM   10
 
 address addr("10.1.0.11", 41234);
 using namespace std;

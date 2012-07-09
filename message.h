@@ -112,18 +112,6 @@ public:
 	//int append_message_data(char *bgn, int len);
 };
 
-class message_task : public task
-{
-	message *task_message;
-public:
-	void set_message(message *msg){task_message = msg;}
-	message *get_message(){return task_message;}
-	message_task(): task_message(NULL){}
-	message_task(message *msg): task_message(msg){}
-
-	int execute();
-};
-
 class message_builder_base
 {
 public:

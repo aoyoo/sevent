@@ -1,5 +1,5 @@
-target = itsmydce
-srcs = front_message.cpp front_server.cpp buffer.cpp message.cpp event_manager.cpp thread.cpp server.cpp socket.cpp socket_event.cpp main.cpp safe_time.cpp 
+target = sevent
+srcs = front_message.cpp front_server.cpp buffer.cpp message.cpp event_manager.cpp thread.cpp task.cpp server.cpp socket.cpp socket_event.cpp main.cpp safe_time.cpp 
 libs = log/lib/liblog.a
 subdirs = log
 INCLUDE = -Ilog/include/  -I./

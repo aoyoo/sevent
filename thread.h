@@ -4,6 +4,7 @@
 #include <list>
 #include "mutex.h"
 #include "event.h"
+#include "task.h"
 #include "socket_event.h"
 
 class pthread
@@ -43,18 +44,6 @@ public:
 	}
 
 	virtual int pthread_func(){}
-};
-
-class thread_pool;
-class task
-{
-	socket_event *task_se;
-public:
-	void set_socket_event(socket_event *se){task_se = se;}
-	socket_event *get_socket_event(){return task_se;}
-
-	int start(thread_pool *tp);
-	virtual int execute(){};
 };
 
 class thread_pool

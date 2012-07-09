@@ -1,13 +1,6 @@
 #include "thread.h"
 #include "Log.h"
 
-int task::start(thread_pool *tp)
-{
-	//LOG_DEBUG_VA("task add task of thread pool %x", tp);
-	tp->add_task(this);
-	return 0;
-}
-
 int thread_pool::start()
 {
 	LOG_INFO_VA("thread_pool start");

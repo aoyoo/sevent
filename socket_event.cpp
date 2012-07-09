@@ -111,7 +111,9 @@ int message_read_event_handler::read(socket_event *se)
 	message *msg = msg_builder->build_message(msg_head, msg_buf);
 	
 	msg->set_socket_event(se);
-	task *tsk = new message_task(msg);
+//	task *tsk = new message_task(msg);
+	task *tsk = new task(msg);
+	tsk->set_socket_event(se);
 	LOG_DEBUG_VA("new task by fd: %d; socket_event: %x; msg: %x; task: %x", se->get_socket_fd(), se, msg, tsk);
 	tsk->start(get_server()->get_thread_pool());
 	return 0;

@@ -7,16 +7,15 @@
 using std::queue;
 using std::map;
 
-class server;  //define in server.h
-class socket_event;
-class event_handler;
+//class server;  //define in server.h
+//class socket_event;
+//class event_handler;
 class event_manager{
 	
 	socket_event *listen;
 	message_server *manager_server;
 
 	queue<socket_event *> ready_events;
-	queue<socket_event *> listen_events;
 	map<int, socket_event *> all_events;
 
 	mutex ready_mutex;

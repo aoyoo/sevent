@@ -3,7 +3,7 @@ path=$(pwd)
 #echo $path
 echo "start apps..."
 
-$path/itsmydce &
+$path/sevent &
 #sleep 4
 
 #echo "ps apps after starting"
