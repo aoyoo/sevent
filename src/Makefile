@@ -4,12 +4,12 @@ srcs=Buffer.cpp Socket.cpp SocketsOps.cpp Thread.cpp ThreadPool.cpp Timestamp.cp
 	 Acceptor.cpp Channel.cpp Connection.cpp EventLoop.cpp EventLoopThread.cpp EventLoopThreadPool.cpp InetAddress.cpp Message.cpp Poller.cpp Server.cpp Task.cpp \
 	 test.cpp Logger.cpp
 
-libs= ../../../trunk/lib/liblog4cxx.a ../../../trunk/lib/libaprutil-1.a ../../../trunk/lib/libapr-1.a \
-			../../../trunk/lib/libprotobuf.a
+libs= ../lib/liblog4cxx.a ../lib/libaprutil-1.a ../lib/libapr-1.a \
+			../lib/libprotobuf.a
 
 subdirs= 
 
-INCLUDE=-I./ -I../../../trunk/include
+INCLUDE=-I./ -I../include
 LIBRARY=-lpthread -lrt -lexpat
 CPPFLAGS=-g 
 #CPPFLAGS=-D_REENTRANT -D_GNU_SOURCE -g 
