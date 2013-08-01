@@ -11,8 +11,8 @@ subdirs=
 
 INCLUDE=-I./ -I../include
 LIBRARY=-lpthread -lrt -lexpat
-CPPFLAGS=-g 
-#CPPFLAGS=-D_REENTRANT -D_GNU_SOURCE -g 
+CPPFLAGS=-g -Wall
+#CPPFLAGS=-g -Wall -Wextra -Werror -Wconversion -Wshadow
 
 objs=$(patsubst %.cpp, %.o, $(srcs))
 

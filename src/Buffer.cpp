@@ -15,7 +15,7 @@ const size_t Buffer::kCheapPrepend;
 const size_t Buffer::kInitialSize;
 
 int Buffer::getMessageNum(){
-	int bufReadableBytes = readableBytes();
+	unsigned int bufReadableBytes = readableBytes();
 	int count = 0;
 	while(1){
 		if(bufReadableBytes < sizeof(MessageHead))
