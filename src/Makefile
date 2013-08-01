@@ -1,0 +1,36 @@
+target=test
+
+srcs=Buffer.cpp Socket.cpp SocketsOps.cpp Thread.cpp ThreadPool.cpp Timestamp.cpp\
+	 Acceptor.cpp Channel.cpp Connection.cpp EventLoop.cpp EventLoopThread.cpp EventLoopThreadPool.cpp InetAddress.cpp Message.cpp Poller.cpp Server.cpp Task.cpp \
+	 test.cpp Logger.cpp
+
+libs= ../../../trunk/lib/liblog4cxx.a ../../../trunk/lib/libaprutil-1.a ../../../trunk/lib/libapr-1.a \
+			../../../trunk/lib/libprotobuf.a
+
+subdirs= 
+
+INCLUDE=-I./ -I../../../trunk/include
+LIBRARY=-lpthread -lrt -lexpat
+CPPFLAGS=-g 
+#CPPFLAGS=-D_REENTRANT -D_GNU_SOURCE -g 
+
+objs=$(patsubst %.cpp, %.o, $(srcs))
+
+all : $(target)
+
+$(target) : $(objs) 
+	for dir in $(subdirs); do make -C $$dir ; done
+#ar cr $(target) $^ $(libs)
+	g++ $(INCLUDE) $(CPPFLAGS) -o $(target) $^ $(libs) $(LIBRARY) 
+
+%.o : %.cpp
+	g++ $(INCLUDE) $(CPPFLAGS) $< -c -o $@
+
+.PHONY : clean, clena
+clean:
+	rm -f $(objs)
+	rm -f $(target)
+clena:
+	rm -f $(objs)
+	rm -f $(target)
+
