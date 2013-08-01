@@ -1,5 +1,5 @@
 ##sevent##
-拙劣的[#muduo#](https://github.com/chenshuo/muduo)仿制品
+拙劣的#[muduo](https://github.com/chenshuo/muduo)#仿制品
 
 主要修改：
 1. 去掉定时器
