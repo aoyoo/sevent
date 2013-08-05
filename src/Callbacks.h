@@ -18,9 +18,9 @@ typedef boost::shared_ptr<Message> MessagePtr;
 typedef boost::shared_ptr<Task> TaskPtr;
 
 //in Connection
-typedef boost::function<void (const ConnectionPtr&,
+typedef boost::function<int (const ConnectionPtr&,
                               const MessagePtr&,
-                              Timestamp)> TaskCallback;
+                              Timestamp)> MessageCallback;
 typedef boost::function<void (const ConnectionPtr&)> CloseCallback;
 typedef boost::function<void(int sockfd, const InetAddress&)> NewConnectionCallback;
 

@@ -15,7 +15,7 @@ namespace sevent{
 class Task : public boost::enable_shared_from_this<Task>
 {
 public:
-	Task(ConnectionPtr, MessagePtr, const TaskCallback & f);
+	Task(ConnectionPtr, MessagePtr, const MessageCallback & f);
 	~Task();
 	
 	int execute();
@@ -30,7 +30,7 @@ private:
 	
 	Timestamp time_;
 	
-	TaskCallback taskFunc_;
+	MessageCallback taskFunc_;
 };
 
 

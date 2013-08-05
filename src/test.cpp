@@ -10,20 +10,26 @@
 #include <boost/bind.hpp>
 
 using namespace sevent;
+using namespace std;
 
 class EchoServer{
 public:
 	EchoServer(const std::string name, const InetAddress &addr)
-		:server_(name, addr)
+		:server_(name, addr), count(0)
 	{
 	}
 	int taskFunc(const ConnectionPtr c, const MessagePtr msg, Timestamp time){
-		LOG_INFO("test server working!!!");
+		LOG_DEBUG("test server working!!!");
+		__sync_fetch_and_add(&count, 1);
+		c->send(&count, 4);
+		return 0;
 	}
 	
-	void start(int workThreadNum, int ioThreadNum){server_.start();}
+	void start(int num){server_.setThreadNum(num);server_.start();}
 	
 	Server server_;
+
+	long long count;
 };
 
 int main(){
@@ -33,8 +39,8 @@ int main(){
 	
 	InetAddress addr(3330);
 	EchoServer *svr = new EchoServer("EchoServer", addr);
-	svr->server_.setTaskCallback(boost::bind(&EchoServer::taskFunc, svr, _1, _2, _3));
-	svr->start(1,1);
+	svr->server_.setMessageCallback(boost::bind(&EchoServer::taskFunc, svr, _1, _2, _3));
+	svr->start(4);
 	while(1)
 		sleep(5);
 	return 0;

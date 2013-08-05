@@ -34,12 +34,12 @@ public:
 	void stop();
 	bool started() const {return started_;}
 	
-	int setThreadNum(int threadNum = 1){
+	void setThreadNum(int threadNum = 1){
 		threadNum_ = threadNum;
 	}
 	
-	void setTaskCallback(const TaskCallback& f){taskThreadFunc_ = f;}
-	TaskCallback getTaskThreadFunc(){return taskThreadFunc_;}
+	void setMessageCallback(const MessageCallback& f){messageThreadFunc_ = f;}
+	MessageCallback getMessageThreadFunc(){return messageThreadFunc_;}
 	
 	std::string &name() {return name_;}
 private:
@@ -59,8 +59,7 @@ private:
   boost::scoped_ptr<EventLoopThreadPool> ioLoopThreadPool_;
   int threadNum_;
 
-  //MessageCallback messageCallback_;
-  TaskCallback taskThreadFunc_;
+  MessageCallback messageThreadFunc_;
   bool started_;
   int nextConnId_;
   typedef std::map<std::string, ConnectionPtr> ConnectionMap;

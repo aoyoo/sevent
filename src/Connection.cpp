@@ -6,7 +6,6 @@
 #include <boost/bind.hpp>
 
 #include <Message.h>
-#include <Task.h>
 #include <Server.h>
 #include <ThreadPool.h>
 #include <Channel.h>
@@ -38,15 +37,15 @@ Connection::Connection(EventLoop* loop,
       boost::bind(&Connection::handleClose, this));
   channel_->setErrorCallback(
       boost::bind(&Connection::handleError, this));
-  LOG_DEBUG ("Connection::ctor[" <<  name_ << "] at " << this
-            << " fd=" << sockfd);
+  LOG_INFO("Connection::ctor[" <<  name_ << "] at " << this
+            << " fd " << sockfd << " localAddr " << localAddr_.toIpPort() << " peerAddr " << peerAddr_.toIpPort());
   socket_->setKeepAlive(true);
 }
 
 Connection::~Connection()
 {
-  LOG_DEBUG ("Connection::dtor[" <<  name_ << "] at " << this
-            << " fd=" << channel_->fd());
+  LOG_INFO("Connection::~Connection[" <<  name_ << "] at " << this
+            << " fd " << socket_->fd() << " localAddr " << localAddr_.toIpPort() << " peerAddr " << peerAddr_.toIpPort());
 }
 
 void Connection::send(const void* data, size_t len)
@@ -211,23 +210,16 @@ void Connection::handleRead(Timestamp receiveTime)
 	{
 		//DIFF TODO just messageCallback_ when get a complete Message
 		int msgNum = inputBuffer_.getMessageNum();
-		if(msgNum < 0){
-			LOG_ERROR("getMessageNum ERROR"); //TODO close this Connection
-		}
-		LOG_DEBUG("getMessageNum " << msgNum << " Buffer readableBytes " << inputBuffer_.readableBytes()); //TODO close this Connection
+		LOG_DEBUG("getMessageNum " << msgNum << " Buffer readableBytes " << inputBuffer_.readableBytes());
 		//如果buffer里有多于1条Message，要都处理掉
 		for(int i = 0; i < msgNum; ++i){
 			MessagePtr msg(new Message(inputBuffer_.peek()));
 			inputBuffer_.retrieve(msg->getTotalLen());
 			LOG_DEBUG("Read Message " << msg->toString() << " total len " << msg->getTotalLen());
-			taskCallback_(shared_from_this(), msg, receiveTime);
+			messageCallback_(shared_from_this(), msg, receiveTime);
 			//messageCallback_(shared_from_this(), &inputBuffer_, receiveTime); //TODO maybe messageCallback_ need a Message?
 		}
 		
-		//TaskPtr tsk(new Task(shared_from_this(), msg->shared_from_this(), taskCallback_));
-		//Server *svr = getLoop()->getServer();
-		//if(svr != NULL)
-		//	svr->getTaskThreadPool()->addTask(tsk->shared_from_this());
 	}
 	else if (n == 0)
 	{

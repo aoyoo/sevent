@@ -8,7 +8,7 @@ using namespace sevent;
 //EventLoopThreadPool::EventLoopThreadPool(EventLoop* baseLoop) //DIFF
 EventLoopThreadPool::EventLoopThreadPool()
 	:started_(false),
-	numThreads_(1),
+	numThreads_(0),
 	next_(0)
 {
 	LOG_INFO("EventLoopThreadPool constructor");
@@ -39,13 +39,12 @@ void EventLoopThreadPool::start()
 
 EventLoop* EventLoopThreadPool::getNextLoop()
 {
-	if (!threads_.empty()){
-		next_ = next_ % threads_.size();
-		EventLoop *loop = threads_[next_].getEventLoop();
-		++next_;
-		LOG_DEBUG("EventLoopThreadPool::getNextLoop " << loop->name_);
-		return loop;
-	}
+	assert(!threads_.empty());
+	next_ = next_ % threads_.size();
+	EventLoop *loop = threads_[next_].getEventLoop();
+	++next_;
+	LOG_DEBUG("EventLoopThreadPool::getNextLoop " << loop->name_);
+	return loop;
 }
 
 

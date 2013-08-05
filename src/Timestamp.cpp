@@ -2,6 +2,7 @@
 
 #include <sys/time.h>
 #include <stdio.h>
+#include <inttypes.h>
 
 #include <boost/static_assert.hpp>
 

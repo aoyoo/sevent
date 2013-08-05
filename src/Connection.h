@@ -51,8 +51,8 @@ class Connection : boost::noncopyable,
   void shutdown();
   void setTcpNoDelay(bool on);
 
-  void setTaskCallback(const TaskCallback& cb)
-  { taskCallback_ = cb; }
+  void setMessageCallback(const MessageCallback& cb)
+  { messageCallback_ = cb; }
 
   /// Internal use only.
   void setCloseCallback(const CloseCallback& cb)
@@ -87,7 +87,7 @@ class Connection : boost::noncopyable,
   boost::scoped_ptr<Channel> channel_;
   InetAddress localAddr_;
   InetAddress peerAddr_;
-  TaskCallback taskCallback_;
+  MessageCallback messageCallback_;
   CloseCallback closeCallback_;
   Buffer inputBuffer_;
   Buffer outputBuffer_; // FIXME: use list<Buffer> as output buffer.

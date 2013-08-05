@@ -43,7 +43,7 @@ void Acceptor::handleRead(){
 	LOG_DEBUG("Acceptor handleRead");
 	loop_->assertInLoopThread();
 	assert(newConnectionCallback_); //DIFF must has a newConnectionCallback_ as normal
-	InetAddress peerAddr(0); 
+	InetAddress peerAddr(0);  //FIXME
 	int sockfd = acceptSocket_.accept(&peerAddr);
 	if(sockfd >= 0){
 		newConnectionCallback_(sockfd, peerAddr);

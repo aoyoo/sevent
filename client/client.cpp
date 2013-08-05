@@ -19,13 +19,13 @@
 //#include "socket.h" 
 using namespace std;
 
-const int buf_length = 10485760;
+//const int buf_length = 10485760;
 
 int client_port = 3330;
 const char *client_ip = "127.0.0.1";
 
-int thread_num = 2;
-int socket_num = 2;
+int thread_num = 4;
+int socket_num = 8;
 
 void *thread_func(void *ptr){
 	cout << "thread_func thread_num " << thread_num << " socket_num " << socket_num << endl;
@@ -59,8 +59,9 @@ void *thread_func(void *ptr){
 	int status = 2;
 	int src = 3;
 	int sn = 4;
-	int length = buf_length;
-	char *buf = new char[buf_length];
+	int length = 4;
+	int count = 0;
+	int readCont = 0;
 	
 	int ret;
 	struct timeval timev;
@@ -72,12 +73,17 @@ void *thread_func(void *ptr){
 			ret = write(sockfd[j], &src, 4);
 			ret = write(sockfd[j], &sn, 4);
 			ret = write(sockfd[j], &length, 4);
-			ret = write(sockfd[j], buf, buf_length);
-
+			ret = write(sockfd[j], &count, 4);
+			ret = read(sockfd[j], &readCont, 4);
 			if(ret < 0){
-				perror("write");
+				perror("io");
 				break;
 			}
+			if(count != readCont){
+				perror("!=");
+				break;
+			}
+			__sync_add_and_fetch(&count,1);
 		}
 	}
 
