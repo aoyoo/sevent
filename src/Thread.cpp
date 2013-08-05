@@ -22,7 +22,6 @@ using namespace sevent;
 void ThreadData::runInThread(){
 	pid_t tid = gettid();
 	*tid_ = tid;
-	LOG_INFO("Thread " << tid << " start");
 	func_();
 }
 

@@ -11,17 +11,15 @@ EventLoopThreadPool::EventLoopThreadPool()
 	numThreads_(0),
 	next_(0)
 {
-	LOG_INFO("EventLoopThreadPool constructor");
 }
 
 EventLoopThreadPool::~EventLoopThreadPool(){
-	LOG_INFO("EventLoopThreadPool destructor");
 }
 
 //void EventLoopThreadPool::start(const ThreadInitCallback& cb) //DIFF
 void EventLoopThreadPool::start()
 {
-	LOG_INFO("EventLoopThreadPool start " << numThreads_);
+	LOG_INFO("EventLoopThreadPool start with thread number " << numThreads_);
 	assert(!started_);
 	//baseLoop_->assertInLoopThread();// DIFF
 	assert(numThreads_); //DIFF

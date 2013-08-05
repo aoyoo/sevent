@@ -14,7 +14,6 @@ EventLoopThread::EventLoopThread(const ThreadInitCallback &cb)
 	cond_(mutex_),
 	threadInitCallback_(cb) //DIFF
 {
-	LOG_INFO("EventLoopThread constructor");
 }
 
 EventLoopThread::EventLoopThread()
@@ -24,7 +23,6 @@ EventLoopThread::EventLoopThread()
 	mutex_(),
 	cond_(mutex_)
 {
-	LOG_INFO("EventLoopThread constructor");
 }
 
 EventLoopThread::~EventLoopThread()

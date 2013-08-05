@@ -51,7 +51,7 @@ public:
 	int pack();
 	int unpack();
 	
-	int getTotalLen(){
+	int getTotalLen(){ //FIXME pack/unpack size is differ?
 		return (sizeof(MessageHead) + head_.length);
 	}
 	

@@ -41,7 +41,6 @@ EventLoop::EventLoop()
 	currentActiveChannel_(NULL),
 	server_(NULL)
 {
-	LOG_INFO("EventLoop constructor, wakeup fd: " << wakeupFd_);
 	t_loopInThisThread = this;
 }
 

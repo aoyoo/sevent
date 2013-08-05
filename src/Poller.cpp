@@ -18,7 +18,6 @@ Poller::Poller(EventLoop* loop)
     epollfd_(::epoll_create(1)),
     events_(kInitEventListSize)
 {
-	LOG_INFO("Poller::Poller constructor epollfd: " << epollfd_);
 	if (epollfd_ < 0)
 	{
 		LOG_ERROR("Poller::Poller");

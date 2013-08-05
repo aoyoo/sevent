@@ -18,7 +18,6 @@ Acceptor::Acceptor(EventLoop* loop, const InetAddress& listenAddr)
 	acceptChannel_(loop, acceptSocket_.fd()),
 	listening_(false)
 {
-	LOG_INFO("Acceptor constructor listen fd: " << acceptSocket_.fd());
 	acceptSocket_.setReuseAddr(true); //TODO
 	//acceptSocket_.setReusePort(true); //TODO seems not support 
 	acceptSocket_.bindAddress(listenAddr);
