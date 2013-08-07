@@ -50,21 +50,20 @@ Connection::~Connection()
 
 void Connection::send(const void* data, size_t len)
 {
-  if (state_ == kConnected)
-  {
-    if (loop_->isInLoopThread())
-    {
-      sendInLoop(data, len);
-    }
-    else
-    {
-      string message(static_cast<const char*>(data), len);
-      loop_->runInLoop(
-          boost::bind(&Connection::sendInLoop,
-                      this,     // FIXME
-                      message));
-    }
-  }
+	if (state_ == kConnected)
+	{
+		if (loop_->isInLoopThread()){
+		  sendInLoop(data, len);
+		}else{
+			string message(static_cast<const char*>(data), len);
+			loop_->runInLoop(
+		      boost::bind(&Connection::sendInLoop,
+		                  this,     // FIXME
+		                  message));
+		}
+	}else{
+		LOG_ERROR("Connection" << name_ << " status " << state_ << " error while send");
+	}
 }
 
 // FIXME efficiency!!!

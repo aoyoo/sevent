@@ -44,35 +44,19 @@ void MessageHead::hton(){
 	length = htonl(length);
 }
 
-Message::Message()
-	:pb_(NULL){
+Message::Message(){
 }
 
 Message::Message(const MessageHead &h)
-	:head_(h), pb_(NULL){
+	:head_(h){
 }
 
 Message::Message(const char* c)
-	:head_(c), pb_(NULL){
+	:head_(c){
 	//head_.ntoh();
 	buf_.assign(c+sizeof(MessageHead), head_.length);
 }
 
-int Message::pack(){
-	
-	if(pb_ == NULL){
-		return -1;
-	}
-	
-}
-
-int Message::unpack(){
-	
-	if(pb_ == NULL){
-		return -1;
-	}
-	
-}
 
 
 

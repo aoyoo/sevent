@@ -13,11 +13,13 @@ namespace sevent{
 
 const int MESSAGE_HEAD_LEN = 20;
 
+
 #pragma pack(push)
 #pragma pack(1)
 class MessageHead
 {
 public:
+
 	MessageHead();
 	MessageHead(const MessageHead &h);
 	MessageHead(const char *c);
@@ -48,9 +50,6 @@ public:
 	
 	const MessageHead &getHead(){return head_;}
 	
-	int pack();
-	int unpack();
-	
 	int getTotalLen(){ //FIXME pack/unpack size is differ?
 		return (sizeof(MessageHead) + head_.length);
 	}
@@ -62,7 +61,6 @@ public:
 private:
 	MessageHead head_;
 	std::string buf_;
-	google::protobuf::Message *pb_;
 };
 
 }
