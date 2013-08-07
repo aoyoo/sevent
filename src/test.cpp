@@ -12,7 +12,7 @@
 using namespace sevent;
 using namespace std;
 
-class EchoServer{
+class CalcServer{
 public:
 	EchoServer(const std::string name, const InetAddress &addr)
 		:server_(name, addr), count(0)
