@@ -156,7 +156,7 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 AM_CPPFLAGS = -I${top_srcdir}/include \
-		-I${top_srcdir}/src/ 
+		-I${top_srcdir}/sevent/ 
 
 LDADD = $(top_srcdir)/lib/liblog4cxx.a \
 	$(top_srcdir)/lib/libapr-1.a \

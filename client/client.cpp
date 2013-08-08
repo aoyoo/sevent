@@ -74,15 +74,15 @@ void *thread_func(void *ptr){
 			ret = write(sockfd[j], &sn, 4);
 			ret = write(sockfd[j], &length, 4);
 			ret = write(sockfd[j], &count, 4);
-			ret = read(sockfd[j], &readCont, 4);
+			//ret = read(sockfd[j], &readCont, 4);
 			if(ret < 0){
 				perror("io");
 				break;
 			}
-			if(count != readCont){
-				perror("!=");
-				break;
-			}
+			//if(count != readCont){
+			//	perror("!=");
+			//	break;
+			//}
 			__sync_add_and_fetch(&count,1);
 		}
 	}

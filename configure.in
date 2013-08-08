@@ -45,6 +45,7 @@ AC_FUNC_MMAP
 AC_CHECK_FUNCS([bzero clock_gettime gettimeofday inet_ntoa memset socket strerror])
 
 AC_CONFIG_FILES([Makefile
+                 sevent/Makefile
                  client/Makefile
-                 src/Makefile])
+                 CalcServer/Makefile])
 AC_OUTPUT

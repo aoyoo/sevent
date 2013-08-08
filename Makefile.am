@@ -1,1 +1,1 @@
-SUBDIRS=src client 
+SUBDIRS=sevent client CalcServer
