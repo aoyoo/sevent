@@ -39,7 +39,6 @@ void EventLoopThread::start(){
 	thread_.start();
 	//DIFF
 	//EventLoopThread has a EventLoop, dont need to get EventLoop in threadFunc
-
 }
 
 void EventLoopThread::threadFunc() //DIFF
@@ -49,10 +48,12 @@ void EventLoopThread::threadFunc() //DIFF
 	
 	LOG_DEBUG("EventLoopThread threadFunc Loop tid " << tid);
 	if(threadInitCallback_){
-		LOG_DEBUG("EventLoopThread " << getEventLoop()->name_ << " InitCallBack");
 		threadInitCallback_();
 	}
 	loop_->loop();
 }
 
+void EventLoopThread::stop(){
+	loop_->quit();
+}
 

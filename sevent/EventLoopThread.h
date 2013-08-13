@@ -4,7 +4,9 @@
 #include <Condition.h>
 #include <Mutex.h>
 #include <Thread.h>
+#include <Callbacks.h>
 
+#include <boost/any.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/scoped_ptr.hpp>
 
@@ -14,7 +16,6 @@ class EventLoop;
 
 class EventLoopThread : boost::noncopyable{
 public:
-	typedef boost::function<void()> ThreadInitCallback;
 	
 	EventLoopThread(const ThreadInitCallback& cb);
 	EventLoopThread();
@@ -29,18 +30,18 @@ public:
 	
 	//EventLoop* startLoop();
 	void start();
-	void stop(){;} //FIXME
+	void stop();
 	
 private:
 	void threadFunc();
 	
-	boost::scoped_ptr<EventLoop> loop_; //DIFF
+	boost::scoped_ptr<EventLoop> loop_;
 	bool exiting_;
 	Thread thread_;
 	MutexLock mutex_;
 	Condition cond_;
 	
-	ThreadInitCallback threadInitCallback_; //DIFF this for possible listen
+	ThreadInitCallback threadInitCallback_; //maybe for possible listen
 };
 
 

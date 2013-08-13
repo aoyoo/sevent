@@ -28,6 +28,9 @@ typedef boost::function<void(int sockfd, const InetAddress&)> NewConnectionCallb
 typedef boost::function<void()> EventCallback;
 typedef boost::function<void(Timestamp)> ReadEventCallback;
 
+//for EventLoopThread
+typedef boost::function<void()> ThreadInitCallback;
+
 }
 
 

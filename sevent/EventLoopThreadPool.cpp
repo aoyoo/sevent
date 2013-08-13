@@ -30,6 +30,7 @@ void EventLoopThreadPool::start()
 		stringstream nameSS;
 		nameSS << name_ << i;
 		t->getEventLoop()->name_ = nameSS.str(); 
+		//t->setInitFunc() //TODO user set some init func for every thread
 		threads_.push_back(t);
 		t->start(); //DIFF //correct??
 	}

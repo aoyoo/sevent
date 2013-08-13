@@ -1,5 +1,5 @@
-#ifndef SEVENT_Connection_H
-#define SEVENT_Connection_H
+#ifndef SEVENT_CONNECTION_H
+#define SEVENT_CONNECTION_H
 
 #include "Callbacks.h"
 #include "Public.h"
@@ -50,6 +50,16 @@ class Connection : boost::noncopyable,
 
   void shutdown();
   void setTcpNoDelay(bool on);
+
+  void setContext(const boost::any& context)
+  { context_ = context; }
+
+  const boost::any& getContext() const
+  { return context_; }
+
+  boost::any* getMutableContext()
+  { return &context_; }
+
 
   void setMessageCallback(const MessageCallback& cb)
   { messageCallback_ = cb; }

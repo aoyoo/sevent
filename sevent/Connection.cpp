@@ -216,9 +216,7 @@ void Connection::handleRead(Timestamp receiveTime)
 			inputBuffer_.retrieve(msg->getTotalLen());
 			LOG_DEBUG("Read Message " << msg->toString() << " total len " << msg->getTotalLen());
 			messageCallback_(shared_from_this(), msg, receiveTime);
-			//messageCallback_(shared_from_this(), &inputBuffer_, receiveTime); //TODO maybe messageCallback_ need a Message?
 		}
-		
 	}
 	else if (n == 0)
 	{

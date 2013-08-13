@@ -49,6 +49,9 @@ public:
 	Message(const MessageHead &h);
 	
 	const MessageHead &getHead(){return head_;}
+	const MessageHead &head(){return head_;}
+
+	const std::string &body(){return buf_;}
 	
 	int getTotalLen(){ //FIXME pack/unpack size is differ?
 		return (sizeof(MessageHead) + head_.length);
