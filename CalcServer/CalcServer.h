@@ -34,7 +34,8 @@ public:
 	void setMessageCallback(const MessageCallback& cb){server_.setMessageCallback(cb);}
 
 	int setup();
-	int taskFunc(const ConnectionPtr c, const MessagePtr msg, Timestamp time);
+	void onConnection(const ConnectionPtr & conn);
+	int taskFunc(const ConnectionPtr &c, const MessagePtr &msg, Timestamp time);
 
 private:
 	Server server_;

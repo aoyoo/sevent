@@ -182,8 +182,8 @@ void Connection::connectEstablished()
   setState(kConnected);
   channel_->tie(shared_from_this());
   channel_->enableReading();
-
-  //connectionCallback_(shared_from_this());
+	if(connectionCallback_)
+	  connectionCallback_(shared_from_this());
 }
 
 void Connection::connectDestroyed()
@@ -194,7 +194,7 @@ void Connection::connectDestroyed()
     setState(kDisconnected);
     channel_->disableAll();
 
-    //connectionCallback_(shared_from_this());
+    //connectionCallback_(shared_from_this()); //user don't care about this
   }
   channel_->remove();
 }
@@ -215,7 +215,7 @@ void Connection::handleRead(Timestamp receiveTime)
 			MessagePtr msg(new Message(inputBuffer_.peek()));
 			inputBuffer_.retrieve(msg->getTotalLen());
 			LOG_DEBUG("Read Message " << msg->toString() << " total len " << msg->getTotalLen());
-			messageCallback_(shared_from_this(), msg, receiveTime);
+			messageCallback_(shared_from_this(), msg->shared_from_this(), receiveTime);
 		}
 	}
 	else if (n == 0)
@@ -284,7 +284,8 @@ void Connection::handleClose()
   channel_->disableAll();
 
   ConnectionPtr guardThis(shared_from_this());
-  //connectionCallback_(guardThis);
+	if(connectionCallback_)
+		connectionCallback_(guardThis);
   // must be the last line
   closeCallback_(guardThis);
 }

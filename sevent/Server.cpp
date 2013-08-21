@@ -58,6 +58,10 @@ void Server::stop(){ //TODO need to ensure
 	ioLoopThreadPool_->stop();
 }
 
+EventLoop *Server::getNextLoop(){
+	return ioLoopThreadPool_->getNextLoop();
+}
+
 void Server::newConnection(int sockfd, const InetAddress &peerAddr){
 	
 	EventLoop *ioLoop = ioLoopThreadPool_->getNextLoop();
@@ -70,9 +74,11 @@ void Server::newConnection(int sockfd, const InetAddress &peerAddr){
 	ConnectionPtr conn(new Connection(ioLoop, name, sockfd, localAddr, peerAddr));
 	
 	assert(connections_.find(name) == connections_.end());
-	
+
+	conn->setConnectionCallback(connectionCallback_);
 	conn->setMessageCallback(messageThreadFunc_);
 	conn->setCloseCallback(boost::bind(&Server::removeConnection, this, _1));
+	conn->setTcpNoDelay(true); //DIFF add
 	connections_[name] = conn;
 	
 	ioLoop->runInLoop(boost::bind(&Connection::connectEstablished, conn)); //put this Connection into Loop

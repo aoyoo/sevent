@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <fcntl.h>
 #include <stdio.h>  // snprintf
+#include <stdlib.h>  // abort 
 #include <strings.h>  // bzero
 #include <sys/socket.h>
 #include <unistd.h>
@@ -62,6 +63,7 @@ void sockets::bindOrDie(int sockfd, const struct sockaddr_in& addr)
   if (ret < 0)
   {
     LOG_ERROR("sockets::bindOrDie");
+		abort();
   }
 }
 

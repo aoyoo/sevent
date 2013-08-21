@@ -60,6 +60,8 @@ class Connection : boost::noncopyable,
   boost::any* getMutableContext()
   { return &context_; }
 
+  void setConnectionCallback(const ConnectionCallback& cb)
+  { connectionCallback_ = cb; }
 
   void setMessageCallback(const MessageCallback& cb)
   { messageCallback_ = cb; }
@@ -98,6 +100,7 @@ class Connection : boost::noncopyable,
   InetAddress localAddr_;
   InetAddress peerAddr_;
   MessageCallback messageCallback_;
+  ConnectionCallback connectionCallback_;
   CloseCallback closeCallback_;
   Buffer inputBuffer_;
   Buffer outputBuffer_; // FIXME: use list<Buffer> as output buffer.

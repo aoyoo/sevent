@@ -40,7 +40,10 @@ public:
 	
 	void setMessageCallback(const MessageCallback& f){messageThreadFunc_ = f;}
 	MessageCallback getMessageThreadFunc(){return messageThreadFunc_;}
-	
+	void setConnectionCallback(const ConnectionCallback &f){connectionCallback_ = f;}
+
+	EventLoop *getNextLoop();
+
 	std::string &name() {return name_;}
 private:
   /// not thread safe, but in loop
@@ -59,6 +62,7 @@ private:
   boost::scoped_ptr<EventLoopThreadPool> ioLoopThreadPool_;
   int threadNum_;
 
+	ConnectionCallback connectionCallback_;
   MessageCallback messageThreadFunc_;
   bool started_;
   int nextConnId_;

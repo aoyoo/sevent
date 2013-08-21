@@ -47,5 +47,6 @@ AC_CHECK_FUNCS([bzero clock_gettime gettimeofday inet_ntoa memset socket strerro
 AC_CONFIG_FILES([Makefile
                  sevent/Makefile
                  client/Makefile
-                 CalcServer/Makefile])
+                 CalcServer/Makefile
+                 DispatchServer/Makefile])
 AC_OUTPUT
