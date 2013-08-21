@@ -25,7 +25,8 @@ public:
 	void start(int num){server_.setThreadNum(num);server_.start();}
 	void setMessageCallback(const MessageCallback& cb){server_.setMessageCallback(cb);}
 
-	void onConnection(const ConnectionPtr &conn);
+	void onServerConnection(const ConnectionPtr &conn);
+	void onClientConnection(const ConnectionPtr &conn);
 	int onMessage(const ConnectionPtr &conn, const MessagePtr &msg, Timestamp time);
 
 private:
@@ -33,9 +34,10 @@ private:
 	InetAddress addr_;
 
 	MutexLock mutex_;
-	map<string, ClientPtr>connections_;
+	map<string, ClientPtr> clients_;
+	map<string, ConnectionPtr> connections_;
 
-	long long count;
+	long long count_;
 };
 
 

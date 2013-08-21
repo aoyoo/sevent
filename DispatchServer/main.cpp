@@ -17,7 +17,6 @@ int main(int argc, char *argv[]){
 
 	DispatchServer *svr = new DispatchServer("DispatchServer", addr);
 
-	svr->setMessageCallback(boost::bind(&DispatchServer::onMessage, svr, _1, _2, _3));
 	svr->start(9);
 	while(1)
 		sleep(5);

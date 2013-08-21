@@ -38,8 +38,8 @@ class Client : boost::noncopyable
 
   // Set message callback.
   // Not thread safe.
-  void setMessageCallback(const MessageCallback& cb)
-  { messageCallback_ = cb; }
+  void setConnectionCallback(const ConnectionCallback &f){connectionCallback_ = f;}
+  void setMessageCallback(const MessageCallback& cb) { messageCallback_ = cb; }
 
  private:
   /// Not thread safe, but in loop
@@ -50,6 +50,8 @@ class Client : boost::noncopyable
   EventLoop* loop_;
   ConnectorPtr connector_; // avoid revealing Connector
   const string name_;
+
+	ConnectionCallback connectionCallback_;
   MessageCallback messageCallback_;
 
   bool retry_;   // atmoic
