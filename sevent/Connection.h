@@ -43,7 +43,7 @@ class Connection : boost::noncopyable,
   bool connected() const { return state_ == kConnected; }
 
   int send(const void* message, size_t len);
-  //void send(Buffer* message);
+  int send(Buffer* message);
   //void send(const Message *msg); //DIFF for future
 
   void shutdown();

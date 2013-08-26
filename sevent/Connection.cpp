@@ -69,25 +69,29 @@ int Connection::send(const void* data, size_t len)
 }
 
 // FIXME efficiency!!!
-//void Connection::send(Buffer* buf)
-//{
-//  if (state_ == kConnected)
-//  {
-//    if (loop_->isInLoopThread())
-//    {
-//      sendInLoop(buf->peek(), buf->readableBytes());
-//      buf->retrieveAll();
-//    }
-//    else
-//    {
-//      loop_->runInLoop(
-//          boost::bind(&Connection::sendInLoop,
-//                      this,     // FIXME
-//                      buf->retrieveAllAsString()));
-//                    //std::forward<string>(message)));
-//    }
-//  }
-//}
+int Connection::send(Buffer* buf)
+{
+  if (state_ == kConnected)
+  {
+    if (loop_->isInLoopThread())
+    {
+      sendInLoop(buf->peek(), buf->readableBytes());
+      buf->retrieveAll();
+    }
+    else
+    {
+      loop_->runInLoop(
+          boost::bind(&Connection::sendInLoop,
+                      this,     // FIXME
+                      buf->retrieveAllAsString()));
+                    //std::forward<string>(message)));
+    }
+  }else{
+		LOG_ERROR("Connection" << name_ << " status " << state_ << " error while send");
+		return -1;
+	}
+	return 0;
+}
 
 void Connection::sendInLoop(const void* data, size_t len)
 {
