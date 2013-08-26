@@ -22,6 +22,8 @@ typedef boost::function<int (const ConnectionPtr&,
                               const MessagePtr&,
                               Timestamp)> MessageCallback;
 typedef boost::function<void (const ConnectionPtr&)> ConnectionCallback;
+typedef boost::function<void (const ConnectionPtr&)> WriteCompleteCallback;
+typedef boost::function<void (const ConnectionPtr&, size_t)> HighWaterMarkCallback;
 typedef boost::function<void (const ConnectionPtr&)> CloseCallback;
 typedef boost::function<void(int sockfd, const InetAddress&)> NewConnectionCallback;
 

@@ -1,10 +1,5 @@
-#include "Server.h"
-#include "Client.h"
-#include "Connection.h"
-#include "Message.h"
-#include "Mutex.h"
-#include "InetAddress.h"
-#include "Logger.h"
+#ifndef DISPATCHSERVER_H
+#define DISPATCHSERVER_H
 
 #include <stdio.h>
 #include <signal.h>
@@ -13,31 +8,40 @@
 #include <map>
 #include <string>
 
-using namespace sevent;
-using namespace std;
+#include "Server.h"
+#include "Client.h"
+#include "Connection.h"
+#include "Message.h"
+#include "Mutex.h"
+#include "InetAddress.h"
+#include "Logger.h"
+
+#include "Tunnel.h"
+
+typedef boost::shared_ptr<Tunnel> TunnelPtr;
+typedef boost::shared_ptr<sevent::Client> ClientPtr;
 
 class DispatchServer{
 public:
-	typedef boost::shared_ptr<Client> ClientPtr;
-	DispatchServer(const std::string name, const InetAddress &addr);
+	DispatchServer(const std::string name, const sevent::InetAddress &ServerAddr, const sevent::InetAddress &clientAddr);
 	~DispatchServer();
 	
 	void start(int num){server_.setThreadNum(num);server_.start();}
-	void setMessageCallback(const MessageCallback& cb){server_.setMessageCallback(cb);}
+	void setMessageCallback(const sevent::MessageCallback& cb){server_.setMessageCallback(cb);}
 
-	void onServerConnection(const ConnectionPtr &conn);
-	void onClientConnection(const ConnectionPtr &conn);
-	int onMessage(const ConnectionPtr &conn, const MessagePtr &msg, Timestamp time);
+	void onServerConnection(const sevent::ConnectionPtr &conn);
+	int onServerMessage(const sevent::ConnectionPtr &conn, const sevent::MessagePtr &msg, sevent::Timestamp time);
 
 private:
-	Server server_;
-	InetAddress addr_;
+	sevent::Server server_;
+	sevent::InetAddress clientAddr_;
+	
+	sevent::MutexLock mutex_;
 
-	MutexLock mutex_;
-	map<string, ClientPtr> clients_;
-	map<string, ConnectionPtr> connections_;
-
+	std::map<std::string, TunnelPtr> tunnels_;
+	
 	long long count_;
 };
 
+#endif
 

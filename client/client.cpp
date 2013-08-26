@@ -26,8 +26,8 @@ char *buf;
 int client_port = 3330;
 const char *client_ip = "127.0.0.1";
 
-int thread_num = 4;
-int socket_num = 8;
+int thread_num = 1;
+int socket_num = 1;
 
 void *thread_func(void *ptr){
 	cout << "thread_func thread_num " << thread_num << " socket_num " << socket_num << endl;
@@ -56,6 +56,7 @@ void *thread_func(void *ptr){
 	}
 	
 	cout << "connect success !" << endl;
+	sleep(5);
 
 	int command = 1;
 	int status = 2;

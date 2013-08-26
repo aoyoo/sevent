@@ -25,8 +25,6 @@ class Socket;
 
 using std::string;
 
-class Connection;
-
 class Connection : boost::noncopyable,
                       public boost::enable_shared_from_this<Connection>
 {
@@ -44,8 +42,8 @@ class Connection : boost::noncopyable,
   const InetAddress& peerAddress() { return peerAddr_; }
   bool connected() const { return state_ == kConnected; }
 
-  void send(const void* message, size_t len);
-  void send(Buffer* message);
+  int send(const void* message, size_t len);
+  //void send(Buffer* message);
   //void send(const Message *msg); //DIFF for future
 
   void shutdown();
@@ -65,6 +63,12 @@ class Connection : boost::noncopyable,
 
   void setMessageCallback(const MessageCallback& cb)
   { messageCallback_ = cb; }
+
+  void setWriteCompleteCallback(const WriteCompleteCallback& cb)
+  { writeCompleteCallback_ = cb; }
+
+  void setHighWaterMarkCallback(const HighWaterMarkCallback& cb, size_t highWaterMark)
+  { highWaterMarkCallback_ = cb; highWaterMark_ = highWaterMark; }
 
   /// Internal use only.
   void setCloseCallback(const CloseCallback& cb)
@@ -99,9 +103,14 @@ class Connection : boost::noncopyable,
   boost::scoped_ptr<Channel> channel_;
   InetAddress localAddr_;
   InetAddress peerAddr_;
+
   MessageCallback messageCallback_;
   ConnectionCallback connectionCallback_;
   CloseCallback closeCallback_;
+  WriteCompleteCallback writeCompleteCallback_;
+  HighWaterMarkCallback highWaterMarkCallback_;
+
+  size_t highWaterMark_;
   Buffer inputBuffer_;
   Buffer outputBuffer_; // FIXME: use list<Buffer> as output buffer.
   boost::any context_;

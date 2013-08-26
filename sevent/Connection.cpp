@@ -48,7 +48,7 @@ Connection::~Connection()
             << " fd " << socket_->fd() << " localAddr " << localAddr_.toIpPort() << " peerAddr " << peerAddr_.toIpPort());
 }
 
-void Connection::send(const void* data, size_t len)
+int Connection::send(const void* data, size_t len)
 {
 	if (state_ == kConnected)
 	{
@@ -63,29 +63,31 @@ void Connection::send(const void* data, size_t len)
 		}
 	}else{
 		LOG_ERROR("Connection" << name_ << " status " << state_ << " error while send");
+		return -1;
 	}
+	return 0;
 }
 
 // FIXME efficiency!!!
-void Connection::send(Buffer* buf)
-{
-  if (state_ == kConnected)
-  {
-    if (loop_->isInLoopThread())
-    {
-      sendInLoop(buf->peek(), buf->readableBytes());
-      buf->retrieveAll();
-    }
-    else
-    {
-      loop_->runInLoop(
-          boost::bind(&Connection::sendInLoop,
-                      this,     // FIXME
-                      buf->retrieveAllAsString()));
-                    //std::forward<string>(message)));
-    }
-  }
-}
+//void Connection::send(Buffer* buf)
+//{
+//  if (state_ == kConnected)
+//  {
+//    if (loop_->isInLoopThread())
+//    {
+//      sendInLoop(buf->peek(), buf->readableBytes());
+//      buf->retrieveAll();
+//    }
+//    else
+//    {
+//      loop_->runInLoop(
+//          boost::bind(&Connection::sendInLoop,
+//                      this,     // FIXME
+//                      buf->retrieveAllAsString()));
+//                    //std::forward<string>(message)));
+//    }
+//  }
+//}
 
 void Connection::sendInLoop(const void* data, size_t len)
 {
@@ -105,16 +107,17 @@ void Connection::sendInLoop(const void* data, size_t len)
     if (nwrote >= 0)
     {
       remaining = len - nwrote;
-      //if (remaining == 0 && writeCompleteCallback_)
-      //{
-      //  loop_->queueInLoop(boost::bind(writeCompleteCallback_, shared_from_this()));
-      //}
+      if (remaining == 0 && writeCompleteCallback_)
+      {
+        loop_->queueInLoop(boost::bind(writeCompleteCallback_, shared_from_this()));
+      }
     }
     else // nwrote < 0
     {
       nwrote = 0;
       if (errno != EWOULDBLOCK)
-      {
+      { 
+				//TODO DIFF what to do when error
         LOG_ERROR("Connection::sendInLoop");
         if (errno == EPIPE) // FIXME: any others?
         {
@@ -129,12 +132,12 @@ void Connection::sendInLoop(const void* data, size_t len)
   {
     LOG_TRACE("I am going to write more data");
     size_t oldLen = outputBuffer_.readableBytes();
-    //if (oldLen + remaining >= highWaterMark_
-    //    && oldLen < highWaterMark_
-    //    && highWaterMarkCallback_)
-    //{
-    //  loop_->queueInLoop(boost::bind(highWaterMarkCallback_, shared_from_this(), oldLen + remaining));
-    //}
+    if (oldLen + remaining >= highWaterMark_
+        && oldLen < highWaterMark_
+        && highWaterMarkCallback_)
+    {
+      loop_->queueInLoop(boost::bind(highWaterMarkCallback_, shared_from_this(), oldLen + remaining));
+    }
     outputBuffer_.append(static_cast<const char*>(data)+nwrote, remaining);
     if (!channel_->isWriting())
     {

@@ -13,11 +13,11 @@ int main(int argc, char *argv[]){
 	int ret = VSLogger::Init("log.conf", "DispatchServer");
 	LOG_INFO("DispatchServer starting...");
 	
-	InetAddress addr(3330);
+	InetAddress serverAddr(3330), clientAddr(3331);
 
-	DispatchServer *svr = new DispatchServer("DispatchServer", addr);
+	DispatchServer *svr = new DispatchServer("DispatchServer", serverAddr, clientAddr);
 
-	svr->start(9);
+	svr->start(1);
 	while(1)
 		sleep(5);
 	delete svr;

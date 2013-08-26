@@ -11,7 +11,7 @@ LDADD= $(top_srcdir)/lib/liblog4cxx.a \
 
 AM_LDFLAGS=-lpthread -lrt -lexpat -g -Wall 
 
-source_list= DispatchServer.cpp
+source_list= DispatchServer.cpp Tunnel.cpp
 dispatchServer_list=main.cpp
 
 bin_PROGRAMS = dispatchServer
