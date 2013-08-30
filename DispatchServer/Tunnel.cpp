@@ -34,7 +34,7 @@ void Tunnel::onConnection(const sevent::ConnectionPtr &conn)
 		serverConn_->setContext(conn);
 		if (serverConn_->inputBuffer()->readableBytes() > 0)
 		{
-			//conn->send(serverConn_->inputBuffer());  //FIXME
+			conn->send(serverConn_->inputBuffer());
 		}
 	}
 	else
