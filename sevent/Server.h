@@ -18,16 +18,13 @@ class InetAddress;
 class ThreadPool;
 class EventLoop;
 class EventLoopThread;
-class EventLoopThreadPool;
+class ThreadPool;
 
 class Server : boost::noncopyable 
 {
 public:
 	
 	Server(const std::string &name, const InetAddress &addr); 
-	//DIFF 1.Server has EventLoop, 
-	//2.Server has a EventLoopThread for Acceptor
-	//3.Server has EventLoopThreadPool for io & work
 	~Server();
 	
 	void start();
@@ -42,7 +39,7 @@ public:
 	MessageCallback getMessageThreadFunc(){return messageThreadFunc_;}
 	void setConnectionCallback(const ConnectionCallback &f){connectionCallback_ = f;}
 
-	EventLoop *getNextLoop();
+	ThreadPool *getThreadPool();
 
 	std::string &name() {return name_;}
 private:
@@ -57,9 +54,9 @@ private:
   string hostport_;
   string name_;
 
-  boost::scoped_ptr<EventLoopThread> listenLoopThread_;
-  boost::scoped_ptr<Acceptor> acceptor_; // for listenLoopThread_
-  boost::scoped_ptr<EventLoopThreadPool> ioLoopThreadPool_;
+  boost::scoped_ptr<EventLoopThread> eventThread_;
+  boost::scoped_ptr<Acceptor> acceptor_; // for eventThread_
+  boost::scoped_ptr<ThreadPool> workThreadPool_;
   int threadNum_;
 
 	ConnectionCallback connectionCallback_;
@@ -72,6 +69,7 @@ private:
 };
 
 }
+
 
 #endif
 

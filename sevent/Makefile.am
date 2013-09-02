@@ -9,7 +9,7 @@ LDADD= $(top_srcdir)/lib/liblog4cxx.a \
 AM_LDFLAGS=-lpthread -lrt -lexpat -g -Wall
 
 source_list= Buffer.cpp Socket.cpp SocketsOps.cpp Thread.cpp ThreadPool.cpp Timestamp.cpp\
-	 Acceptor.cpp Channel.cpp Connection.cpp EventLoop.cpp EventLoopThread.cpp EventLoopThreadPool.cpp InetAddress.cpp Message.cpp Poller.cpp Server.cpp Task.cpp Logger.cpp Connector.cpp Client.cpp
+	 Acceptor.cpp Channel.cpp Connection.cpp EventLoop.cpp EventLoopThread.cpp EventLoopThreadPool.cpp InetAddress.cpp Message.cpp Poller.cpp Server.cpp Connector.cpp Client.cpp Logger.cpp 
 
 noinst_LIBRARIES=libsevent.a
 

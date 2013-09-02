@@ -20,10 +20,6 @@ public:
 	
 	int execute();
 	
-	//Connection* getConnection(){return _connection;}
-	//Message* getMessage(){return _message;}
-	//Timestamp getCreateTime(){return _time;}
-	
 private:
 	ConnectionPtr connection_;
 	MessagePtr message_;

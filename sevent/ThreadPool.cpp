@@ -1,106 +1,87 @@
+#include <ThreadPool.h>
+
 #include <time.h>
 #include <sys/time.h>
 #include <algorithm>
+
 #include <boost/bind.hpp>
 
-#include "ThreadPool.h"
-#include "Task.h"
-#include "Logger.h"
+#include <Task.h>
+#include <Logger.h>
 
-namespace sevent{
+using namespace sevent;
 
-ThreadPool::ThreadPool(): _started(false){
+ThreadPool::ThreadPool(const std::string &name)
+	:name_(name), 
+	mutex_(),
+	notEmpty_(mutex_),
+	notFull_(mutex_),
+	running_(false)
+{
 	LOG_INFO("ThreadPool constructor");
-	_taskSize = 0;
-	pthread_cond_init(&_cond, NULL);
-	pthread_mutex_init(&_mutex, NULL);
-}
-
-ThreadPool::ThreadPool(const std::string name):_name(name), _started(false){
-	LOG_INFO("ThreadPool constructor");
-	_taskSize = 0;
-	pthread_cond_init(&_cond, NULL);
-	pthread_mutex_init(&_mutex, NULL);
 }
 
 ThreadPool::~ThreadPool(){
-	LOG_INFO("ThreadPool destructor");
-	pthread_cond_destroy(&_cond);
-	pthread_mutex_destroy(&_mutex);
-}
-
-void ThreadPool::clean(){
-	if (_started) {
+	LOG_INFO("ThreadPool::~ThreadPool");
+	if(running_)
 		stop();
-	}
-	//delete all thread, task
 }
 
 void ThreadPool::start(int number){
-	assert(!_started);
-	assert(_threads.empty());
-	_started = true;
-	_threadsNum = number;
-	LOG_INFO("ThreadPool " << name() << " started with number " << _threadsNum);
-	for (int i = 0; i < _threadsNum; ++i) {
+	assert(threads_.empty());
+	running_ = true;
+	LOG_INFO("ThreadPool " << name() << " started with number " << number);
+	for (int i = 0; i < number; ++i) {
 		Thread *t = new Thread(boost::bind(&ThreadPool::threadRun, this));
-		_threads.push_back(t);
-		t->start();
+		threads_.push_back(new Thread(boost::bind(&ThreadPool::threadRun, this)));
+		threads_[i].start();
 	}
-	return;
 }
 
-int ThreadPool::wait(){
-	for(std::vector<Thread *>::iterator iter = _threads.begin(); iter != _threads.end(); ++iter) {
-		(*iter)->join();
+void ThreadPool::stop()
+{
+	{
+	MutexLockGuard lock(mutex_);
+	running_ = false;
+	notEmpty_.notifyAll();
 	}
-	return 0;
-}
-
-int ThreadPool::stop(){
-	_started = false;
-	pthread_cond_broadcast(&_cond);
-//	for_each(_threads.begin(), _threads.end(),[](Thread * t) {t->join();});
-	for(std::vector<Thread *>::iterator iter = _threads.begin(); iter != _threads.end(); ++iter) {
-		(*iter)->join();
-	}
-	return 0;
+	//for_each(threads_.begin(), threads_.end(), boost::bind(&sevent::Thread::join, _1); //FIXME
+	//for(std::vector<Thread *>::iterator iter = _threads.begin(); iter != _threads.end(); ++iter) {
+	//	(*iter)->join();
+	//}
 }
 
 int ThreadPool::addTask(const TaskPtr &t){
-	
 	int ret = 0;
-	pthread_mutex_lock(&_mutex);
-
-	_tasks.push(t);
-	_taskSize++;
-	LOG_DEBUG("ThreadPool " << name() << " current task size " << _taskSize);
-	pthread_mutex_unlock(&_mutex);
-	pthread_cond_signal(&_cond);
-	return ret;
+	{
+	MutexLockGuard lock(mutex_);
+	tasks_.push_back(t);
+	notEmpty_.notify();
+	}
+	return 0;
 }
 
 TaskPtr ThreadPool::getNextTask(){
-	pthread_mutex_lock(&_mutex);
-	while(_tasks.empty() && _started) {
-		pthread_cond_wait(&_cond, &_mutex);
+	MutexLockGuard lock(mutex_);
+	while(tasks_.empty() && running_) {
+		notEmpty_.wait();
 	}
 	TaskPtr t;
-	if(!_tasks.empty()) {
-		t = _tasks.front();
-		_tasks.pop();
-		_taskSize--;
+	if(!tasks_.empty()) {
+		t = tasks_.front();
+		tasks_.pop_front();
 	}
-	pthread_mutex_unlock(&_mutex);
 	return t;
 }
 
 int ThreadPool::threadRun(){
 	LOG_INFO("ThreadPool " << name() << " workThread start");
 	
-	while (_started) {
+	while (running_) {
 		TaskPtr t = getNextTask();
-		int ret = t->execute();
+		int ret = 0;
+		if(t)
+			ret = t->execute();
 		if (ret < 0) {
 			LOG_ERROR("ThreadPool " << name() << "task execution error");
 		}
@@ -111,5 +92,4 @@ int ThreadPool::threadRun(){
 }
 
 
-}
 

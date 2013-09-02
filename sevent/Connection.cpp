@@ -6,6 +6,7 @@
 #include <boost/bind.hpp>
 
 #include <Message.h>
+#include <Task.h>
 #include <Server.h>
 #include <ThreadPool.h>
 #include <Channel.h>
@@ -214,7 +215,6 @@ void Connection::handleRead(Timestamp receiveTime)
 	ssize_t n = inputBuffer_.readFd(channel_->fd(), &savedErrno); 
 	if (n > 0)
 	{
-		//DIFF TODO just messageCallback_ when get a complete Message
 		int msgNum = inputBuffer_.getMessageNum();
 		LOG_DEBUG("getMessageNum " << msgNum << " Buffer readableBytes " << inputBuffer_.readableBytes());
 		//如果buffer里有多于1条Message，要都处理掉
@@ -222,7 +222,8 @@ void Connection::handleRead(Timestamp receiveTime)
 			MessagePtr msg(new Message(inputBuffer_.peek()));
 			inputBuffer_.retrieve(msg->getTotalLen());
 			LOG_DEBUG("Read Message " << msg->toString() << " total len " << msg->getTotalLen());
-			messageCallback_(shared_from_this(), msg->shared_from_this(), receiveTime);
+			TaskPtr t(new Task(shared_from_this(), msg->shared_from_this(), messageCallback_));
+			getLoop()->getServer()->getThreadPool()->addTask(t);
 		}
 	}
 	else if (n == 0)

@@ -13,7 +13,7 @@ Task::Task(ConnectionPtr c, MessagePtr msg, const MessageCallback& f)
 }
 
 Task::~Task(){
-	LOG_DEBUG("Task " << (long)this << " ~Task");
+	LOG_DEBUG("Task::~Task");
 }
 
 int Task::execute(){

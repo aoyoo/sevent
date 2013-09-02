@@ -1,50 +1,55 @@
 #ifndef SEVENT_THREADPOOL_H
 #define SEVENT_THREADPOOL_H
 
-#include "Thread.h"
-#include "Callbacks.h"
-
 #include <queue>
 #include <vector>
 #include <string>
 
+#include <boost/function.hpp>
+#include <boost/noncopyable.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
+
+#include <Condition.h>
+#include <Mutex.h>
+#include <Thread.h>
+#include <Callbacks.h>
+
 namespace sevent{
 
-class ThreadPool {
+class ThreadPool : boost::noncopyable{
 public:
-	explicit ThreadPool();
-	explicit ThreadPool(const std::string name);
+
+	explicit ThreadPool(const std::string &name);
 	~ThreadPool();
 
-	bool started() const {
-		return _started;
+	bool isRunning() const {
+		return running_;
 	} 
+
 	void start(int number);
-	int wait();
-	int stop();
-	void clean();
+	void stop();
+
+	void setName(std::string name){name_ = name;}
+	std::string &name(){return name_;}
+
 	int addTask(const TaskPtr &t);
 
-	void setName(std::string name){_name = name;}
-	std::string &name(){return _name;}
+	std::string name_;
 private:
 	int threadRun();
 
 	TaskPtr getNextTask();
 
-	pthread_cond_t _cond;
-	pthread_mutex_t _mutex;
+	MutexLock mutex_;
+	Condition notEmpty_;
+	Condition notFull_;
 
-	std::string _name;
-	bool _started;
+	bool running_;
 
-	std::queue <TaskPtr> _tasks;
-	int _taskSize;
-	std::vector <Thread *>_threads;
-	int _threadsNum;
+	std::deque<TaskPtr> tasks_;
 
-	ThreadPool & operator =(const ThreadPool & other);
-	ThreadPool(const ThreadPool & other);
+	boost::ptr_vector<Thread> threads_;
+
 };
 
 

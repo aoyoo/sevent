@@ -52,8 +52,7 @@ am__objects_1 = Buffer.$(OBJEXT) Socket.$(OBJEXT) SocketsOps.$(OBJEXT) \
 	EventLoop.$(OBJEXT) EventLoopThread.$(OBJEXT) \
 	EventLoopThreadPool.$(OBJEXT) InetAddress.$(OBJEXT) \
 	Message.$(OBJEXT) Poller.$(OBJEXT) Server.$(OBJEXT) \
-	Task.$(OBJEXT) Logger.$(OBJEXT) Connector.$(OBJEXT) \
-	Client.$(OBJEXT)
+	Connector.$(OBJEXT) Client.$(OBJEXT) Logger.$(OBJEXT)
 am_libsevent_a_OBJECTS = $(am__objects_1)
 libsevent_a_OBJECTS = $(am_libsevent_a_OBJECTS)
 DEFAULT_INCLUDES = -I.
@@ -170,7 +169,7 @@ LDADD = $(top_srcdir)/lib/liblog4cxx.a \
 
 AM_LDFLAGS = -lpthread -lrt -lexpat -g -Wall
 source_list = Buffer.cpp Socket.cpp SocketsOps.cpp Thread.cpp ThreadPool.cpp Timestamp.cpp\
-	 Acceptor.cpp Channel.cpp Connection.cpp EventLoop.cpp EventLoopThread.cpp EventLoopThreadPool.cpp InetAddress.cpp Message.cpp Poller.cpp Server.cpp Task.cpp Logger.cpp Connector.cpp Client.cpp
+	 Acceptor.cpp Channel.cpp Connection.cpp EventLoop.cpp EventLoopThread.cpp EventLoopThreadPool.cpp InetAddress.cpp Message.cpp Poller.cpp Server.cpp Connector.cpp Client.cpp Logger.cpp 
 
 noinst_LIBRARIES = libsevent.a
 libsevent_a_SOURCES = ${source_list}
@@ -238,7 +237,6 @@ include ./$(DEPDIR)/Poller.Po
 include ./$(DEPDIR)/Server.Po
 include ./$(DEPDIR)/Socket.Po
 include ./$(DEPDIR)/SocketsOps.Po
-include ./$(DEPDIR)/Task.Po
 include ./$(DEPDIR)/Thread.Po
 include ./$(DEPDIR)/ThreadPool.Po
 include ./$(DEPDIR)/Timestamp.Po

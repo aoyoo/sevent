@@ -6,7 +6,6 @@
 #include <Acceptor.h>
 #include <EventLoop.h>
 #include <EventLoopThread.h>
-#include <EventLoopThreadPool.h>
 #include <ThreadPool.h>
 #include <SocketsOps.h>
 #include <Logger.h>
@@ -18,19 +17,18 @@ Server::Server(const std::string &name, const InetAddress &addr)
 	started_(false),
 	nextConnId_(0),
 	threadNum_(0),
-	listenLoopThread_(new EventLoopThread),
-	acceptor_(new Acceptor(listenLoopThread_->getEventLoop(), addr)),
-	ioLoopThreadPool_(new EventLoopThreadPool)
+	eventThread_(new EventLoopThread),
+	acceptor_(new Acceptor(eventThread_->getEventLoop(), addr)),
+	workThreadPool_(new ThreadPool(name))
 {
 	acceptor_->setNewConnectionCallback(boost::bind(&Server::newConnection, this, _1, _2));
-	listenLoopThread_->setInitFunc(boost::bind(&Acceptor::listen, acceptor_.get()));
-	listenLoopThread_->getEventLoop()->name_ = "listenLoopThread";
-	ioLoopThreadPool_->name_ = "ioLoopThreadPool";
+	eventThread_->setInitFunc(boost::bind(&Acceptor::listen, acceptor_.get()));
+	eventThread_->getEventLoop()->name_ = "listenLoopThread";
 }
 	
 Server::~Server(){
 	LOG_INFO("Server destructor");
-	listenLoopThread_->getEventLoop()->assertInLoopThread();
+	eventThread_->getEventLoop()->assertInLoopThread();
 	LOG_TRACE("TcpServer::~TcpServer [" << name_ << "] destructing");
 	
 	for (ConnectionMap::iterator it(connections_.begin()); it != connections_.end(); ++it)
@@ -42,29 +40,29 @@ Server::~Server(){
 	}
 }
 
+ThreadPool *Server::getThreadPool()
+{
+	return workThreadPool_.get();
+}
+
 void Server::start(){
 	LOG_INFO("Server " << name() << " starting...");
 	
 	started_ = true;
 	
-	ioLoopThreadPool_->setThreadNum(threadNum_);
-	ioLoopThreadPool_->start();
-	listenLoopThread_->start();
+	workThreadPool_->start(threadNum_);
+	eventThread_->start();
 }
 
 void Server::stop(){ //TODO need to ensure
 	started_ = false;
-	listenLoopThread_->stop();
-	ioLoopThreadPool_->stop();
-}
-
-EventLoop *Server::getNextLoop(){
-	return ioLoopThreadPool_->getNextLoop();
+	eventThread_->stop();
+	workThreadPool_->stop();
 }
 
 void Server::newConnection(int sockfd, const InetAddress &peerAddr){
 	
-	EventLoop *ioLoop = ioLoopThreadPool_->getNextLoop();
+	EventLoop *ioLoop = eventThread_->getEventLoop();
 	stringstream nameSS;
 	nameSS << '#' << nextConnId_;
 	++nextConnId_;
@@ -86,12 +84,11 @@ void Server::newConnection(int sockfd, const InetAddress &peerAddr){
 
 void Server::removeConnection(const ConnectionPtr& conn){
 // FIXME: unsafe
-	listenLoopThread_->getEventLoop()->runInLoop(boost::bind(&Server::removeConnectionInLoop, this, conn));
+	eventThread_->getEventLoop()->runInLoop(boost::bind(&Server::removeConnectionInLoop, this, conn));
 }
 
 void Server::removeConnectionInLoop(const ConnectionPtr& conn){
-	//LOG_INFO("Server::removeConnectionInLoop [" << name_ << "] - connection " << conn->name());
-	LOG_DEBUG("Server::removeConnectionInLoop");
+	LOG_DEBUG("Server::removeConnectionInLoop [" << name_ << "] - connection " << conn->name());
 	size_t n = connections_.erase(conn->name());
 	(void)n;
 	assert(n == 1);
